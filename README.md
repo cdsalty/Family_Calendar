@@ -10,3 +10,10 @@ https://fullcalendar.io/docs/react
 https://github.com/fullcalendar/fullcalendar-example-projects/blob/master/react/src/DemoApp.jsx
 https://github.com/fullcalendar/fullcalendar-example-projects/tree/master/react-redux
 https://fullcalendar.io/docs/getting-started
+
+
+
+// Other from Christopher
+https://fullcalendar.io/docs/background-events
+
+Dragndrop events, selectable dates, background evetns, themeing, local, timezones
