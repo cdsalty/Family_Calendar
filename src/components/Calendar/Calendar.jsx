@@ -1,40 +1,59 @@
 import React, { useState } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import listPlugin from '@fullcalendar/list';
+import bootstrapPlugin from '@fullcalendar/bootstrap';
 
 const Calendar = () => {
-  const [event, setEvent] = useState({});
+  const [events, setEvents] = useState([
+    {
+      start: '2020-09-18',
+      end: '2020-09-20',
+      display: 'background'
+    }
+  ]);
 
-  // Great work so far :) I LOVE THIS STUFF!
+  //   const handleDateClick = (info) => {
+  //     console.log(info.date);
+  //   };
 
-  const handleDateClick = (info) => {
-    console.log(info.date);
+  const handleSelect = ({ start, end }) => {
+    const title = prompt('Enter the title: ');
+    const newEvent = { title, start, end };
+
+    setEvents([...events, newEvent]);
   };
 
-  const handleSelect = (info) => {
-    setEvent({ title: 'event 1', start: info.start, end: info.end });
-  };
-
+  // timeGridDay
   return (
     <FullCalendar
-      plugins={[dayGridPlugin, interactionPlugin]}
+      // height={800}
+      // aspectRatio={2}  left off with aspect ratio not conforming to our beliefs
+      plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin, bootstrapPlugin]}
       initialView="dayGridMonth"
-      selectable
+      themeSystem='bootstrap'
       headerToolbar={{
-        left: 'prev,next today',
+        start: 'prev,next today',
         center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay',
-      }}
-      events={[
-        event,
-      ]}
-      dateClick={handleDateClick}
+
+        end: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth',
+      }
+      }
+      selectable
+      events={events}
+      eventOverlap={(stillEvent, movingEvent) => stillEvent.allDay && movingEvent.allDay}
+      //   dateClick={handleDateClick}
       select={handleSelect}
     />
   );
 };
 
-export default Calendar;
+// selectOverlap (we need to set it to false)
+// Determines whether the user is allowed to select periods of time that are occupied by events.
 
-// selectable dates:
+// selectConstraint
+// Limits user selection to certain windows of time.
+
+export default Calendar;
