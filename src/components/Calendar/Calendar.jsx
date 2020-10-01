@@ -6,6 +6,11 @@ import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
 import bootstrapPlugin from '@fullcalendar/bootstrap';
 
+// What should happen when we click on the day
+// Mobile Responsive / Device Compatibility 
+
+import currentTime from '../../utils/currentTime';
+
 const Calendar = () => {
   const [events, setEvents] = useState([
     {
@@ -46,9 +51,17 @@ const Calendar = () => {
       eventOverlap={(stillEvent, movingEvent) => stillEvent.allDay && movingEvent.allDay}
       //   dateClick={handleDateClick}
       select={handleSelect}
+      slotDuration='00:15:00'
+      navLinks
+      nowIndicator
+      scrollTime={currentTime}
+    // var time = today. getHours() + ":" + today
     />
   );
 };
+
+
+
 
 // selectOverlap (we need to set it to false)
 // Determines whether the user is allowed to select periods of time that are occupied by events.
