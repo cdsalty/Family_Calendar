@@ -5,6 +5,9 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
 import bootstrapPlugin from '@fullcalendar/bootstrap';
+import { v4 as uuidv4 } from 'uuid';
+
+import './Calendar.css';
 
 // What should happen when we click on the day
 // Mobile Responsive / Device Compatibility 
@@ -12,11 +15,28 @@ import bootstrapPlugin from '@fullcalendar/bootstrap';
 import currentTime from '../../utils/currentTime';
 
 const Calendar = () => {
+  console.log(new Date());
   const [events, setEvents] = useState([
     {
-      start: '2020-09-18',
-      end: '2020-09-20',
-      display: 'background'
+      title: "Session with Adrian",
+      description: "Working on Family Calendar", // custom
+      priority: 4, // custom 1-5 slider
+      // url: "https://www.google.com",
+      // start: '2020-10-20T12:30:00',
+      // end: '2020-10-20T14:30:00',
+      id: uuidv4(), // id
+      classNames: ['event', 'myclass1'],
+      // backgroundColor: 'white',
+      // borderColor: 'green',
+      // textColor: 'green',
+      editable: true,
+      display: 'auto', // 'block', 'list-item', 'background', 'none' // okay as it is
+      // allDay: true,
+      // BELOW ARE FOR RECURRING EVENTS
+      daysOfWeek: [1], // create a picker input with days of the week.
+      startTime: "14:30", // The time of day this event starts.
+      endTime: "16:00", // The time of day this event ends.
+      groupId: 'blueEvents',
     }
   ]);
 
@@ -31,30 +51,25 @@ const Calendar = () => {
     setEvents([...events, newEvent]);
   };
 
-  // timeGridDay
+  console.log(events);
+
   return (
     <FullCalendar
-      // height={800}
-      // aspectRatio={2}  left off with aspect ratio not conforming to our beliefs
+      events={events}
+      select={handleSelect}
       plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin, bootstrapPlugin]}
       initialView="dayGridMonth"
       themeSystem='bootstrap'
-      headerToolbar={{
-        start: 'prev,next today',
-        center: 'title',
-
-        end: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth',
-      }
-      }
+      headerToolbar={{ start: 'prev,next today', center: 'title', end: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth' }}
       selectable
-      events={events}
       eventOverlap={(stillEvent, movingEvent) => stillEvent.allDay && movingEvent.allDay}
-      //   dateClick={handleDateClick}
-      select={handleSelect}
       slotDuration='00:15:00'
       navLinks
       nowIndicator
       scrollTime={currentTime}
+    // dateClick={handleDateClick}
+    // height={800}
+    // aspectRatio={2}  left off with aspect ratio not conforming to our beliefs
     // var time = today. getHours() + ":" + today
     />
   );

@@ -12,7 +12,6 @@ https://github.com/fullcalendar/fullcalendar-example-projects/tree/master/react-
 https://fullcalendar.io/docs/getting-started
 
 
-
 // Other from Christopher
 https://fullcalendar.io/docs/background-events
 
