@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -11,11 +11,12 @@ import './Calendar.css';
 
 // What should happen when we click on the day
 // Mobile Responsive / Device Compatibility 
+import CalendarContext from '../../context/CalendarContext';
 
 import currentTime from '../../utils/currentTime';
 
 const Calendar = () => {
-  console.log(new Date());
+  const { isModalOpen, setIsModalOpen } = useContext(CalendarContext);
   const [events, setEvents] = useState([
     {
       title: "Session with Adrian",
@@ -45,22 +46,25 @@ const Calendar = () => {
   //   };
 
   const handleSelect = ({ start, end }) => {
-    const title = prompt('Enter the title: ');
-    const newEvent = { title, start, end };
-
-    setEvents([...events, newEvent]);
+    setIsModalOpen(true);
   };
-
-  console.log(events);
 
   return (
     <FullCalendar
+      customButtons={{
+        addEvent: {
+          text: 'Add Event',
+          click() {
+            setIsModalOpen(true);
+          }
+        }
+      }}
       events={events}
       select={handleSelect}
       plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin, bootstrapPlugin]}
       initialView="dayGridMonth"
       themeSystem='bootstrap'
-      headerToolbar={{ start: 'prev,next today', center: 'title', end: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth' }}
+      headerToolbar={{ start: 'prev,next today addEvent', center: 'title', end: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth' }}
       selectable
       eventOverlap={(stillEvent, movingEvent) => stillEvent.allDay && movingEvent.allDay}
       slotDuration='00:15:00'
