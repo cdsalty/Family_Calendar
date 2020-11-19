@@ -6,7 +6,7 @@ import CalendarContext from '../../context/CalendarContext';
 import useStyles from './styles';
 import { hex } from 'wcag-contrast';
 // functi to delete events..
-var contrast = require('contrast');
+import contrast from 'contrast';
 
 const eventExample = {
   title: "Session with Adrian",
@@ -35,36 +35,31 @@ const SimpleModal = () => {
   const { isModalOpen, setIsModalOpen, events, setEvents, dateInfo, setDateInfo } = useContext(CalendarContext);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [backgroundColor, setBackgroundColor] = useState('');
-  const [textColor, setTextColor] = useState('');
+  const [color, setColor] = useState('');
+  const [textColor, setTextColor] = useState('#fff');
   const classes = useStyles();
 
   const createEvent = (e) => {
     e.preventDefault();
 
-    console.log('bg color', backgroundColor)
-    console.log('text color before', textColor)
-
-    if (contrast(backgroundColor) === 'light') {
-      console.log(1, textColor)
-      setTextColor('#000')
-      console.log('1a', textColor)
-    } else {
-      setTextColor('#fff');
-      console.log(2)
-    }
-    console.log('text color after', textColor)
-
-    const newEvent = { id: uuidv4(), title, description, textColor, backgroundColor, ...dateInfo };
-    // console.log(hex('#ffffff', color));
-
-
+    const newEvent = { ...dateInfo, id: uuidv4(), title, description, textColor, backgroundColor: color, borderColor: color };
 
     setEvents([...events, newEvent]);
     setTitle('');
     setDescription('');
     setDateInfo({});
+    setTextColor('#fff')
     setIsModalOpen(false);
+  }
+
+  const changeColor = (c) => {
+    setColor(c.hex);
+
+    if (contrast(c.hex) === 'light') {
+      setTextColor('#000')
+    } else {
+      setTextColor('#fff')
+    }
   }
 
   return (
@@ -75,7 +70,7 @@ const SimpleModal = () => {
           <form className={classes.form} onSubmit={createEvent} noValidate autoComplete="off">
             <TextField value={title} onChange={(e) => setTitle(e.target.value)} label="Title" variant="outlined" fullWidth />
             <TextField value={description} onChange={(e) => setDescription(e.target.value)} label="Description" variant="outlined" fullWidth multiline rowsMax={4} />
-            <CirclePicker color={backgroundColor} onChangeComplete={(color) => setBackgroundColor(color.hex)} />
+            <CirclePicker color={color} onChangeComplete={changeColor} />
             <Button type="submit" variant="contained" color="primary">Create Event</Button>
           </form>
         </div>
